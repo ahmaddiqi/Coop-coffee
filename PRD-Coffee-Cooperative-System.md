@@ -27,19 +27,69 @@ Dokumen ini menggambarkan spesifikasi teknis dan fungsional untuk pengembangan p
 
 ---
 
-## 3. Struktur Modul Sistem
 
-Sistem dibagi menjadi dua modul utama yang saling terintegrasi:
+## 3. Struktur Modular & Roadmap Pengembangan
 
-### **Farm Management System (FMS)**
-Fokus pada pencatatan seluruh proses agrikultur, mulai dari registrasi petani dan lahan, hingga pencatatan aktivitas budidaya dan panen.
+Sistem dikembangkan secara modular dan bertahap agar mudah diintegrasikan dan scalable. Berikut tahapan dan modul utama:
 
-### **Inventory Management System (IMS)**
-Fokus pada pencatatan stok dan alur barang, baik input pertanian (benih, pupuk, pestisida) maupun produk kopi (Cherry, Green Bean) di gudang koperasi.
+### **Fase 1 (MVP): Farm & Inventory Management**
+- **Farm Management System (FMS):**
+  - Registrasi & manajemen petani, lahan, aktivitas budidaya (tanam, panen, estimasi panen)
+  - Estimasi panen otomatis dari data lahan/aktivitas
+- **Inventory Management System (IMS):**
+  - Pencatatan barang masuk/keluar (input pertanian, hasil panen, distribusi, penjualan)
+  - Batch tracking (cherry → green bean), simple IN/OUT dashboard
+- **Integrasi Data:**
+  - Migrasi data existing (petani, lahan, inventory) ke sistem baru
+  - Integrasi awal dengan PasarMikro (manual/mirroring, lalu bertahap ke real-time sync)
+- **Dashboard:**
+  - Web dashboard koperasi & kementerian (summary, status batch, estimasi panen, stok)
+
+### **Fase 2 & Selanjutnya (Pengembangan Modular):**
+- **Financing/Accounting Module:**
+  - Pengembangan dari IMS: pencatatan transaksi keuangan, hutang/piutang, pembiayaan, invoice, dsb.
+- **Carbon Credit Module:**
+  - Tracking aktivitas ramah lingkungan, perhitungan emisi, sertifikasi carbon credit
+- **Training & Certification Module:**
+  - Record pelatihan, sertifikasi petani/operator
+- **Advanced Integration:**
+  - Real-time API sync dengan PasarMikro & platform lain (misal: Beiko, BNI, dsb)
+- **Yield Prediction & AI:**
+  - Prediksi panen, supply chain analytics, rekomendasi pupuk, dsb.
+
+### **Prinsip Modularitas**
+- Setiap modul berdiri sendiri (FMS, IMS, Financing, Carbon, Training)
+- API-based: Setiap modul bisa diintegrasikan/ditingkatkan tanpa mengganggu modul lain
+- Data terpusat: Semua modul mengakses database yang sama, memudahkan reporting & traceability
+- Integrasi bertahap: Mulai dari manual/mirroring, lalu real-time sync
 
 ---
 
-## 4. Alur Bisnis & Sistem Batch (Core Workflow)
+
+## 4. Roadmap & Tahapan Implementasi
+
+### **Urutan Fase (Dari Mudah ke Sulit)**
+1. Setup Infrastruktur & Database (Google Cloud Platform, BigQuery, server, domain, email)
+2. CRUD Data Master (User, Koperasi, Petani, Lahan)
+3. Aktivitas Budidaya & Inventory Sederhana (FMS & IMS MVP)
+4. Dashboard Basic (koperasi & kementerian)
+5. Integrasi Data Manual/Mirroring (PasarMikro, dsb)
+6. Batch Traceability (cherry → green bean)
+7. User Management & Security (role-based, audit log)
+8. Integrasi Real-time (API, webhook)
+9. Financing/Accounting
+10. Carbon Credit
+11. AI/Prediction/Advanced Analytics
+
+### **Pilot Project**
+- Implementasi awal di Gudang Batang, Jawa Tengah (stock opname, transaksi digital, model warehouse management)
+- Uji coba dashboard, inventory, dan integrasi data
+
+### **Domain & Integrasi**
+- Sistem akan diintegrasikan dengan domain coop-coffee.id dan coop-coffee.org (finalisasi domain menyusul)
+- Data dan dashboard harus bisa diakses dari domain utama
+
+---
 
 ### 4.1. Registrasi User & Koperasi
 
@@ -463,7 +513,8 @@ flowchart TD
 
 ---
 
-## 5. Fitur Utama Sistem (MVP)
+
+## 5. Fitur Utama Sistem (MVP & Modular)
 
 ### 5.1. Fitur Web Dashboard
 
@@ -474,38 +525,31 @@ flowchart TD
 - **User Management**: Add/remove users, reset passwords, set permissions
 - **Audit Log**: Track siapa yang input/edit data apa dan kapan
 
-#### **Modul FMS (Simplified MVP):**
 
-- **Manajemen Entitas**: Form untuk CRUD (Create, Read, Update, Delete) data Koperasi, Petani, dan Lahan.
-- **Pencatatan Aktivitas Utama**: Focus pada milestone penting (Tanam, Panen, Estimasi)
-- **Planning Dashboard**: Calendar view estimasi panen dan reminder
+#### **Modul FMS (Tahap 1):**
+- CRUD data Koperasi, Petani, Lahan
+- Pencatatan aktivitas utama: Tanam, Panen, Estimasi Panen
+- Estimasi panen otomatis dari data lahan/aktivitas
+- Calendar view estimasi panen & reminder
+- Pemupukan hanya dicatat di Inventory (bukan FMS)
 
-*Note: Pemupukan tracked di Inventory saja, tidak di FMS untuk MVP*
+#### **Modul IMS (Tahap 1):**
+- Simple IN/OUT dashboard: Barang masuk/keluar
+- Tracking transaksi: Log semua pergerakan barang dengan timestamp
+- Batch kopi: Traceability cherry → green bean (parent-child batch)
+- Stock overview: Summary stok per kategori
+- Sinkronisasi PasarMikro: Mulai dari manual/mirroring, bertahap ke auto-sync
 
-#### **Modul IMS (Simple Inventory Management):**
-
-- **Simple IN/OUT Dashboard**: Barang masuk vs barang keluar
-- **Tracking Transaksi**: Log semua pergerakan barang dengan timestamp
-- **Batch Kopi**: Basic traceability cherry → green bean
-- **Stock Overview**: Summary stok available per kategori
-- **Sinkronisasi PasarMikro**: Auto-sync penjualan dari marketplace
 
 #### **Dashboard & Pelaporan:**
-- **Dashboard Koperasi**: 
-  - Ringkasan total panen aktual vs estimasi
-  - Status batch dan estimasi ketersediaan produk jadi
-  - **Calendar view** estimasi panen mendatang dari FMS
-  - Alert lahan yang mendekati waktu panen
-- **Dashboard Kementerian**: 
-  - Laporan agregat nasional dengan filter (provinsi, koperasi, status batch)
-  - **Proyeksi supply nasional** berdasarkan estimasi panen FMS
-  - Analisis gap antara estimasi vs realisasi panen
-- **Ekspor Data**: Fitur ekspor ke CSV/Excel.
+- Dashboard Koperasi: Ringkasan panen aktual vs estimasi, status batch, estimasi produk jadi, calendar view, alert panen
+- Dashboard Kementerian: Laporan agregat nasional (filter provinsi, koperasi, status batch), proyeksi supply nasional, analisis gap estimasi vs realisasi
+- Ekspor Data: CSV/Excel
 
-### 5.2. Fitur WhatsApp AI
 
-- **Input Data Cepat**: Operator dapat mengirim pesan untuk mencatat transaksi umum (panen, distribusi pupuk).
-- **Kueri & Koreksi Data**: Menanyakan status batch atau melakukan koreksi data sederhana.
+### 5.2. Fitur WhatsApp AI (Tahap Lanjutan)
+- Input data cepat: Operator bisa input transaksi via WhatsApp Bot (panen, distribusi, dsb)
+- Kueri & koreksi data: Cek status batch, koreksi data sederhana
 
 ---
 
@@ -693,13 +737,13 @@ Sistem Koperasi <-> PasarMikro
 
 ---
 
-## 8. Batasan MVP & Rencana Pengembangan
 
-### 8.1. Yang TIDAK Termasuk dalam MVP
+## 8. Batasan MVP & Rencana Modular
 
-- **Manajemen Inventori Otomatis & Real-time**: Sistem di MVP hanya mencatat peristiwa masuk/keluar. Sistem tidak secara otomatis menghitung "Sisa Stok Live" atau memberikan peringatan stok menipis.
-
-- **Manajemen Inventori Kompleks**: Fitur seperti stok opname, perhitungan penyusutan (shrinkage), dan valuasi inventori tidak termasuk.
+### 8.1. Yang TIDAK Termasuk dalam MVP (Akan Masuk Fase Lanjutan)
+- Manajemen inventori otomatis & real-time (stock live, warning stok menipis)
+- Manajemen inventori kompleks (stok opname, penyusutan, valuasi)
+- Financing/accounting, carbon credit, training, AI prediction (masuk roadmap modular)
 
 ---
 
