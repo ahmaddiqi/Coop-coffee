@@ -17,7 +17,7 @@ Dokumen ini menggambarkan spesifikasi teknis dan fungsional untuk pengembangan p
 
 2. **Membangun Sistem Traceability**: Menciptakan jejak digital untuk setiap batch produk kopi, memungkinkan penelusuran asal-usul (lahan, tanggal panen) dan alur prosesnya secara transparan.
 
-3. **Memudahkan Input Data**: Menyediakan antarmuka yang sangat mudah digunakan melalui AI WhatsApp Assistant dan Dashboard Web untuk operator koperasi.
+3. **Memudahkan Input Data**: Menyediakan antarmuka yang sangat mudah digunakan melalui AI WhatsApp Assistant dan Dashboard Web untuk Admin Koperasi.
 
 4. **Menjadi Alat Prediksi Pasokan**: Memberikan estimasi ketersediaan produk jadi (Green Bean) di masa depan kepada koperasi, buyer, dan kementerian untuk perencanaan pasar yang lebih baik.
 
@@ -41,7 +41,7 @@ Sistem dikembangkan secara modular dan bertahap agar mudah diintegrasikan dan sc
   - Batch tracking (cherry → green bean), simple IN/OUT dashboard
 - **Integrasi Data:**
   - Migrasi data existing (petani, lahan, inventory) ke sistem baru
-  - Integrasi awal dengan PasarMikro (manual/mirroring, lalu bertahap ke real-time sync)
+  - Integrasi awal dengan PasarMikro (manual/mirroring, lalu bertahap ke real-time sync) sudah masuk fase 1, agar data inventory dan transaksi langsung sinkron dengan marketplace sejak awal
 - **Dashboard:**
   - Web dashboard koperasi & kementerian (summary, status batch, estimasi panen, stok)
 
@@ -51,9 +51,9 @@ Sistem dikembangkan secara modular dan bertahap agar mudah diintegrasikan dan sc
 - **Carbon Credit Module:**
   - Tracking aktivitas ramah lingkungan, perhitungan emisi, sertifikasi carbon credit
 - **Training & Certification Module:**
-  - Record pelatihan, sertifikasi petani/operator
+  - Record pelatihan, sertifikasi petani
 - **Advanced Integration:**
-  - Real-time API sync dengan PasarMikro & platform lain (misal: Beiko, BNI, dsb)
+  - Real-time API sync dengan platform lain (misal: Beiko, BNI, dsb)
 - **Yield Prediction & AI:**
   - Prediksi panen, supply chain analytics, rekomendasi pupuk, dsb.
 
@@ -81,22 +81,16 @@ Sistem dikembangkan secara modular dan bertahap agar mudah diintegrasikan dan sc
 10. Carbon Credit
 11. AI/Prediction/Advanced Analytics
 
-### **Pilot Project**
-- Implementasi awal di Gudang Batang, Jawa Tengah (stock opname, transaksi digital, model warehouse management)
-- Uji coba dashboard, inventory, dan integrasi data
 
-### **Domain & Integrasi**
-- Sistem akan diintegrasikan dengan domain coop-coffee.id dan coop-coffee.org (finalisasi domain menyusul)
-- Data dan dashboard harus bisa diakses dari domain utama
 
 ---
 
 ### 4.1. Registrasi User & Koperasi
 
-**Alur Baru: Operator Mendaftarkan Koperasi**
+**Alur Baru: Admin Koperasi Mendaftarkan Koperasi**
 
 1. **Registrasi User Pertama**: 
-   - Operator membuat akun user (username, password, data diri)
+   - Admin Koperasi membuat akun user (username, password, data diri)
    - User belum terikat ke koperasi apapun
    - Status: User aktif tapi belum bisa akses fitur koperasi
 
@@ -106,24 +100,20 @@ Sistem dikembangkan secara modular dan bertahap agar mudah diintegrasikan dan sc
    - Sistem membuat record koperasi baru
    - Sistem otomatis menambahkan user ke koperasi dengan role 'ADMIN'
 
-*Catatan: Jenis koperasi saat ini tidak wajib diisi (non-prioritas MVP)*
 
-**Setelah registrasi koperasi selesai, Admin dapat:**
 
-- **Menambah Operator lain** ke dalam koperasi yang sama
-- **Set permission level**: Admin (full access) atau Operator (limited access)  
+**Setelah registrasi koperasi selesai, Admin Koperasi dapat:**
 - **Manage user accounts**: Reset password, deactivate user, dll
 
 **User Roles dalam Koperasi:**
 
-- **Admin**: User pertama yang mendaftarkan koperasi (full control) + bisa tambah user baru ke koperasi
-- **Operator**: Bisa input/edit data operasional, tidak bisa manage user
+**Admin Koperasi**: User koperasi, memiliki kontrol penuh terhadap data koperasi sendiri, petani, lahan, aktivitas, dan inventory. Semua input data dilakukan oleh Admin koperasi.
 
 ### 4.2. Registrasi Petani
 
-Operator mendaftarkan seluruh petani anggota koperasi.
+Admin Koperasi mendaftarkan seluruh petani anggota koperasi.
 
-Data yang dicatat:
+Data yang dicatat (data lain menyusul):
 
 - Nama petani
 - Nomor kontak
@@ -134,7 +124,7 @@ Data yang dicatat:
 
 ### 4.3. Registrasi Lahan
 
-Operator mencatat data tiap lahan yang dikelola koperasi:
+Admin Koperasi mencatat data tiap lahan yang dikelola koperasi:
 
 - Nama / kode lahan
 - Lokasi & alamat (bisa mencakup koordinat GPS)
@@ -207,7 +197,7 @@ Inventory system yang simpel dengan prinsip dasar:
 
 Ketika waktu panen tiba:
 
-- Operator mencatat hasil panen dari setiap lahan
+    - Admin Koperasi mencatat hasil panen dari setiap lahan
 - Yang dicatat: tanggal panen, jumlah panen (dalam kg cherry)
 - Sistem otomatis membuat **Batch ID baru** untuk traceability
 - Entry ke inventory sebagai: "Cherry dari Lahan X - Masuk: Xkg"
@@ -230,7 +220,7 @@ Ketika waktu panen tiba:
 
 **Praktiknya di Sistem:**
 
-- Operator pilih Cherry Batch A
+    - Admin Koperasi pilih Cherry Batch A
 - Klik "Mulai Proses" → Set tanggal selesai estimasi
 - Sistem auto-buat Green Bean Batch B dengan link ke parent (Cherry Batch A)
 - Kalau ada yang tanya: "Green Bean Batch B asalnya dari mana?" → Sistem bisa jawab: "Dari Cherry Batch A, Lahan X, panen tanggal Y"
@@ -260,7 +250,7 @@ Setelah green bean siap:
 - **Otomatis**: Data inventory Green Bean sync ke PasarMikro catalog
 - **Buyer Order**: Buyer melakukan pemesanan via PasarMikro
 - **Auto Update**: Order otomatis muncul di dashboard koperasi
-- **Konfirmasi**: Operator konfirmasi ketersediaan stok
+- **Konfirmasi**: Admin Koperasi konfirmasi ketersediaan stok
 - **Payment**: Pembayaran diproses di PasarMikro
 - **Inventory Update**: Stok otomatis berkurang di kedua sistem
 - **Recording**: Transaksi tercatat lengkap dengan referensi PasarMikro
@@ -294,12 +284,12 @@ Semua data ditampilkan dalam bentuk:
 |-----------|-----------|---------------------|------------|
 | Registrasi user | Core System | User | Account user |
 | Registrasi koperasi | Core System | User | Data koperasi + relasi user-koperasi |
-| Registrasi petani & lahan | FMS | Operator | Data petani, lahan |
-| Aktivitas tanam & panen | FMS | Operator | Riwayat budidaya |
-| Inventarisasi & distribusi input | IMS | Operator | Transaksi barang masuk/keluar |
-| Panen kopi cherry | FMS | Operator | Batch ID cherry |
-| Proses pascapanen | IMS | Operator | Batch ID green bean |
-| Penjualan | IMS + PasarMikro | Operator, Buyer | Transaksi siap invoice |
+| Registrasi petani & lahan | FMS | Admin Koperasi | Data petani, lahan |
+| Aktivitas tanam & panen | FMS | Admin Koperasi | Riwayat budidaya |
+| Inventarisasi & distribusi input | IMS | Admin Koperasi | Transaksi barang masuk/keluar |
+| Panen kopi cherry | FMS | Admin Koperasi | Batch ID cherry |
+| Proses pascapanen | IMS | Admin Koperasi | Batch ID green bean |
+| Penjualan | IMS + PasarMikro | Admin Koperasi, Buyer | Transaksi siap invoice |
 | Monitoring | IMS + FMS | Kementerian | Laporan nasional |
 
 ---
@@ -318,7 +308,7 @@ flowchart TD
     F --> G[Otomatis jadi Admin Koperasi]
     G --> H{Mau tambah user ke koperasi?}
     
-    H -->|Ya| I[Tambah Operator ke Koperasi]
+    H -->|Ya| I[Tambah Admin Koperasi ke Koperasi]
     I --> J[Set Role & Permission di Koperasi]
     J --> K[Send Credentials]
     
@@ -331,7 +321,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Admin/Operator Login] --> B[Pilih Menu Petani]
+    A[Admin Koperasi Login] --> B[Pilih Menu Petani]
     B --> C[Form Registrasi Petani]
     C --> D[Input Data Petani]
     D --> E[Simpan Data Petani]
@@ -343,7 +333,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Admin/Operator Login] --> B[Pilih Menu Lahan]
+    A[Admin Koperasi Login] --> B[Pilih Menu Lahan]
     B --> C[Form Registrasi Lahan]
     C --> D[Input Data Lahan]
     D --> E{Petani sudah ada?}
@@ -412,7 +402,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Operator] --> B[Pilih Cherry Batch]
+    A[Admin Koperasi] --> B[Pilih Cherry Batch]
     B --> C[Klik: Mulai Proses]
     C --> D[Input Tanggal Estimasi Selesai]
     D --> E[Sistem Auto-buat Green Bean Batch baru]
@@ -433,7 +423,7 @@ flowchart TD
     B --> C[Tampil di Catalog PasarMikro]
     C --> D[Buyer Browse & Order]
     D --> E[Order Auto Update ke Dashboard Koperasi]
-    E --> F[Operator Konfirmasi Stok]
+    E --> F[Admin Koperasi Konfirmasi Stok]
     F --> G{Stok Tersedia?}
     
     G -->|Ya| H[Konfirmasi ke PasarMikro]
@@ -520,8 +510,8 @@ flowchart TD
 
 #### **Login & User Management**
 
-- **Multi-user Support**: Satu koperasi bisa punya multiple admin/operator
-- **Role-based Access**: Admin → Operator (hierarchical permissions)
+- **Multi-user Support**: Satu koperasi bisa punya multiple Admin Koperasi
+- **Role-based Access**: SUPER_ADMIN (nasional) dan Admin Koperasi (koperasi)
 - **User Management**: Add/remove users, reset passwords, set permissions
 - **Audit Log**: Track siapa yang input/edit data apa dan kapan
 
@@ -548,14 +538,16 @@ flowchart TD
 
 
 ### 5.2. Fitur WhatsApp AI (Tahap Lanjutan)
-- Input data cepat: Operator bisa input transaksi via WhatsApp Bot (panen, distribusi, dsb)
+- Input data cepat: Admin koperasi bisa input transaksi via WhatsApp Bot (panen, distribusi, dsb)
 - Kueri & koreksi data: Cek status batch, koreksi data sederhana
 
 ---
 
 ## 6. Struktur Data Kunci
 
-### User Management
+
+
+### User Management & Role Detail
 | Field | Keterangan |
 |-------|------------|
 | user_id | ID unik user |
@@ -563,23 +555,35 @@ flowchart TD
 | password_hash | Password terenkripsi |
 | nama_lengkap | Nama lengkap user |
 | email | Email user |
-| role | 'ADMIN', 'OPERATOR' |
+| role | 'SUPER_ADMIN', 'ADMIN' |
 | is_active | Status aktif user (true/false) |
 | created_by | ID user yang membuat account ini |
 | created_at | Timestamp pembuatan account |
 | last_login | Timestamp login terakhir |
 
-**Catatan:**
-- User tidak terikat langsung ke koperasi di tabel ini. Relasi user-koperasi diatur lewat tabel terpisah (User_Koperasi).
-- User nasional/kementerian menggunakan role 'ADMIN' dengan akses lintas koperasi.
-- Petani BUKAN user yang login, melainkan entitas yang didaftarkan oleh operator/admin koperasi. Data petani ada di tabel terpisah (lihat tabel Petani di bawah).
+**Detail Role User:**
+- Sistem hanya mengenal 2 role user:
+  - **SUPER_ADMIN**: Dipegang oleh tim Kerabatani dan Coop Coffee. Role ini memiliki akses penuh ke seluruh data, pengelolaan user, audit, dan seluruh dashboard agregat nasional. SUPER_ADMIN dapat mengelola data lintas koperasi dan melakukan pengaturan sistem. 
+  - **ADMIN**: Dipegang oleh user koperasi. Role ini hanya dapat mengelola data koperasi masing-masing, petani, lahan, aktivitas, dan inventory di lingkup koperasi sendiri. Tidak dapat mengakses data koperasi lain.
+
+**Stakeholder Access Table (Role Management):**
+| Stakeholder         | Role           | Access Scope                                      |
+|---------------------|----------------|---------------------------------------------------|
+| SUPER_ADMIN         | Kerabatani, Coop Coffee | Full access to all cooperatives, national dashboard, all data, all features |
+| Admin Koperasi      | Koperasi       | Full access to own cooperative, petani, lahan, aktivitas, inventory, PasarMikro sync |
+| Buyer, Mitra, dll   | Data Entity    | No login access; only as data entities in system   |
+
+- Semua input data di level koperasi dilakukan oleh Admin Koperasi.
+- WhatsApp AI input hanya untuk Admin Koperasi.
+- Dashboard agregat nasional diakses oleh SUPER_ADMIN melalui domain kopi.id.
+- Stakeholder lain (buyer, mitra, dsb) hanya sebagai data entity, bukan user login (untuk MVP fase 1)
 
 ### User_Koperasi (Relasi User dengan Koperasi)
 | Field | Keterangan |
 |-------|------------|
 | user_id | Foreign key ke User |
 | koperasi_id | Foreign key ke Koperasi |
-| role_koperasi | 'ADMIN', 'OPERATOR' |
+| role_koperasi | 'ADMIN' |
 | assigned_by | ID user yang menambahkan user ini ke koperasi |
 | assigned_at | Timestamp penambahan ke koperasi |
 
@@ -638,7 +642,7 @@ flowchart TD
 **Catatan Update Data:**
 - **Estimasi bisa diupdate**: Field `jumlah_estimasi_kg` dan `tanggal_estimasi` bisa diubah sebelum panen actual terjadi.
 - **Actual tidak bisa diubah**: Setelah `jumlah_aktual_kg` diisi (status jadi 'SELESAI'), data ini tidak bisa diubah untuk menjaga integritas traceability.
-- **Status otomatis**: Status berubah dari 'TERJADWAL' → 'SELESAI' ketika operator input data actual panen.
+- **Status otomatis**: Status berubah dari 'TERJADWAL' → 'SELESAI' ketika Admin Koperasi input data actual panen.
 - **Audit log**: Semua perubahan estimasi tercatat di audit log untuk tracking revisi.
 
 ### Inventory (Simple IN/OUT Tracking)
@@ -690,7 +694,7 @@ flowchart TD
 
 ---
 
-## 7. Integrasi Pihak Ketiga (PasarMikro)
+## 7. Integrasi Pihak Ketiga (PasarMikro) (data sementara)
 
 ### 7.1. Konsep Integrasi Dua Arah
 
@@ -733,7 +737,7 @@ Sistem Koperasi <-> PasarMikro
 - **Real-time Inventory Management**: Stok selalu tersinkron
 - **Automated Sales Recording**: Transaksi otomatis tercatat di kedua sistem
 - **Better Market Intelligence**: Data buyer dan trend penjualan
-- **Reduced Manual Work**: Operator tidak perlu input ulang data penjualan
+- **Reduced Manual Work**: Admin Koperasi tidak perlu input ulang data penjualan
 
 ---
 
