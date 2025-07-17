@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+ 
+@layer base {
+  :root {
+    /* Artisanal Coffee Design System - Exact Match to Presentation */
+    --cream-bg: #FDFBF7;
+    --coffee-brown: #38221F;
+    --burnt-orange: #E9770F;
+    --forest-green: #166534;
+    --soft-gray: #6B7280;
+    --light-gray: #F3F4F6;
+    --border-gray: #E5E7EB;
+    --success-green: #10B981;
+    --error-red: #EF4444;
+    
+    /* Design System Variables (HSL for Tailwind compatibility) */
+    --background: 45 64% 98%; /* #FDFBF7 in HSL */
+    --foreground: 14 43% 17%; /* #38221F in HSL */
+    --card: 0 0% 100%; /* Pure white */
+    --card-foreground: 14 43% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 14 43% 17%;
+    --primary: 28 93% 49%; /* #E9770F in HSL */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 13% 91%; /* #E5E7EB in HSL */
+    --secondary-foreground: 14 43% 17%;
+    --muted: 210 20% 96%; /* #F3F4F6 in HSL */
+    --muted-foreground: 215 16% 47%; /* #6B7280 in HSL */
+    --accent: 28 93% 49%; /* #E9770F in HSL */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%; /* #EF4444 in HSL */
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%; /* #E5E7EB in HSL */
+    --input: 210 20% 96%; /* #F3F4F6 in HSL */
+    --ring: 28 93% 49%; /* #E9770F in HSL */
+    --radius: 0.75rem;
+    
+    /* Legacy coffee theme colors for backward compatibility */
+    --coffee-dark: 14 43% 17%; /* #38221F */
+    --coffee-warm: 45 64% 98%; /* #FDFBF7 */
+    --coffee-orange: 28 93% 49%; /* #E9770F */
+    --coffee-green: 142 67% 25%; /* #166534 */
+    --coffee-neutral: 215 16% 47%; /* #6B7280 */
+  }
+ 
+  .dark {
+    --background: 25 20% 15%; /* Darker Coklat Tua */
+    --foreground: 45 50% 90%; /* Slightly darker Putih Gading */
+    --card: 25 20% 20%;
+    --card-foreground: 45 50% 90%;
+    --popover: 25 20% 20%;
+    --popover-foreground: 45 50% 90%;
+    --primary: 28 57% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 148 20% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 25 20% 30%;
+    --muted-foreground: 45 20% 70%;
+    --accent: 28 57% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 68% 47%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 25 20% 35%;
+    --input: 25 20% 30%;
+    --ring: 28 57% 42%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--cream-bg);
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(56, 34, 31, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(233, 119, 15, 0.03) 0%, transparent 50%);
+    color: var(--coffee-brown);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--coffee-brown);
+    line-height: 1.2;
+  }
+
+  /* Smooth transitions for interactive elements */
+  button, a, input, textarea, select {
+    transition: all 0.2s ease;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: 2px solid var(--burnt-orange);
+    outline-offset: 2px;
+  }
+
+  /* Custom utility classes */
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .text-coffee-dark {
+    color: hsl(var(--coffee-dark));
+  }
+
+  .bg-coffee-warm {
+    background-color: hsl(var(--coffee-warm));
+  }
+
+  .text-coffee-orange {
+    color: hsl(var(--coffee-orange));
+  }
+
+  .bg-coffee-orange {
+    background-color: hsl(var(--coffee-orange));
+  }
+
+  .text-coffee-green {
+    color: hsl(var(--coffee-green));
+  }
+
+  .bg-coffee-green {
+    background-color: hsl(var(--coffee-green));
+  }
+
+  .text-coffee-neutral {
+    color: hsl(var(--coffee-neutral));
+  }
+
+  /* Enhanced shadows for depth */
+  .shadow-coffee {
+    box-shadow: 0 4px 6px -1px rgba(56, 34, 31, 0.1), 0 2px 4px -1px rgba(56, 34, 31, 0.06);
+  }
+
+  .shadow-coffee-lg {
+    box-shadow: 0 10px 15px -3px rgba(56, 34, 31, 0.1), 0 4px 6px -2px rgba(56, 34, 31, 0.05);
+  }
+
+  /* Smooth transitions */
+  .transition-coffee {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Coffee texture backgrounds */
+  .bg-coffee-texture {
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(56, 34, 31, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(233, 119, 15, 0.03) 0%, transparent 50%);
+  }
+
+  .bg-sidebar-texture {
+    background-image: 
+      linear-gradient(135deg, rgba(0,0,0,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 30% 70%, rgba(233, 119, 15, 0.1) 0%, transparent 50%);
+  }
+
+  /* Card enhancements */
+  .coffee-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(56, 34, 31, 0.08);
+    box-shadow: 
+      0 4px 6px -1px rgba(56, 34, 31, 0.1), 
+      0 2px 4px -1px rgba(56, 34, 31, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Organic border radius variations */
+  .rounded-organic {
+    border-radius: 0.75rem 1rem 0.75rem 1rem;
+  }
+
+  .rounded-organic-lg {
+    border-radius: 1rem 1.25rem 1rem 1.25rem;
+  }
+
+  /* Subtle hover effects */
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 10px 15px -3px rgba(56, 34, 31, 0.15), 
+      0 4px 6px -2px rgba(56, 34, 31, 0.08);
+  }
+
+  /* Input field enhancements */
+  .coffee-input {
+    background: rgba(253, 251, 247, 0.8);
+    border: 1px solid rgba(56, 34, 31, 0.15);
+    transition: all 0.2s ease;
+  }
+
+  .coffee-input:focus {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--burnt-orange);
+    box-shadow: 0 0 0 3px rgba(233, 119, 15, 0.1);
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .coffee-card {
+      padding: 1rem;
+    }
+    
+    h1, h2 {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+    
+    h3, h4 {
+      font-size: 1.25rem;
+      line-height: 1.3;
+    }
+
+    .hover-lift:hover {
+      transform: none;
+    }
+
+    /* PWA mobile enhancements */
+    body {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    /* Better touch targets */
+    button, a, input, select, textarea {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Smooth scrolling for mobile */
+    * {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Fix viewport on iOS */
+    html {
+      height: -webkit-fill-available;
+    }
+    
+    body {
+      min-height: -webkit-fill-available;
+    }
+  }
+
+  /* Responsive table */
+  @media (max-width: 640px) {
+    .mobile-table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .mobile-stack {
+      display: block;
+    }
+    
+    .mobile-stack td {
+      display: block;
+      border: none;
+      padding: 0.5rem 1rem;
+      text-align: left;
+    }
+    
+    .mobile-stack td:before {
+      content: attr(data-label) ": ";
+      font-weight: bold;
+      color: var(--coffee-brown);
+    }
+  }
+}

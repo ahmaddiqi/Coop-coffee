@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Kopi Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #FDFBF7 0%, #F5F2EE 100%);
+            color: #38221F;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            text-align: center;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(56, 34, 31, 0.1);
+        }
+        
+        .coffee-icon {
+            width: 80px;
+            height: 80px;
+            background: #E9770F;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #38221F;
+        }
+        
+        p {
+            color: #38221F;
+            opacity: 0.8;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .retry-btn {
+            background: #E9770F;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .retry-btn:hover {
+            background: #d16909;
+            transform: translateY(-2px);
+        }
+        
+        .sync-status {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(233, 119, 15, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #E9770F;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="coffee-icon">☕</div>
+        <h1>Mode Offline</h1>
+        <p>Anda sedang tidak terhubung ke internet. Beberapa fitur mungkin terbatas, namun data tersimpan secara lokal.</p>
+        
+        <div class="sync-status">
+            <strong>Status Sinkronisasi:</strong>
+            <p id="sync-info">Menunggu koneksi untuk menyinkronkan data...</p>
+        </div>
+        
+        <button class="retry-btn" onclick="location.reload()">
+            🔄 Coba Lagi
+        </button>
+        
+        <p style="margin-top: 20px; font-size: 0.9em;">
+            Data yang telah disimpan akan otomatis tersinkronisasi ketika koneksi kembali.
+        </p>
+    </div>
+
+    <script>
+        // Check connection status
+        function updateConnectionStatus() {
+            const syncInfo = document.getElementById('sync-info');
+            if (navigator.onLine) {
+                syncInfo.textContent = '✅ Koneksi tersedia - menyinkronkan data...';
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } else {
+                syncInfo.textContent = '📡 Menunggu koneksi internet...';
+            }
+        }
+
+        // Listen for connection changes
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        
+        // Initial check
+        updateConnectionStatus();
+    </script>
+</body>
+</html>
